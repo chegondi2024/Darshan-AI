@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+:root {
+  --gold: #d4af37;
+  --crimson: #990000;
+  --bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --glass: rgba(255, 255, 255, 1);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color-scheme: light !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: white !important;
+  color: #1e293b !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Force light colors everywhere */
+.glass-panel {
+  background: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 20px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+#mission-sidebar, 
+#intelligence-sidebar {
+  background-color: white !important;
+  color: #1e293b !important;
+}
+
+/* Overriding system dark mode preferences */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light !important;
+  }
+  body {
+    background: white !important;
+    color: #1e293b !important;
+  }
+  #mission-sidebar, 
+  #intelligence-sidebar,
+  .glass-panel {
+    background: white !important;
+    color: #1e293b !important;
+  }
+}
+
+.gold-text {
+  background: linear-gradient(135deg, #b8860b 0%, #8b6508 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+}
+
+/* Sacred Aurora Design Tokens */
+@keyframes aurora-mesh {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.bg-aurora {
+  background: linear-gradient(-45deg, #f8fafc, #fffbeb, #f0fdf4, #eff6ff);
+  background-size: 400% 400%;
+  animation: aurora-mesh 15s ease infinite;
+}
+
+.sacred-glass {
+  background: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.living-grid {
+  background-image: 
+    linear-gradient(rgba(184, 134, 11, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184, 134, 11, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: grid-shift 20s linear infinite;
+}
+
+@keyframes grid-shift {
+  from { background-position: 0 0; }
+  to { background-position: 40px 40px; }
+}
+
+/* Animations & Utilities */
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.2); }
+  70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-up {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes dash-move {
+  to { stroke-dashoffset: -20; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes route-flow {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0); opacity: 0; }
+  100% { transform: translateY(-10px); opacity: 1; }
+}
+
+.animate-route-flow {
+  stroke-dasharray: 10, 15;
+  animation: route-flow 3s linear infinite;
+}
+
+.animate-float-up {
+  animation: float-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-glow { animation: pulse-glow 2s infinite; }
+.animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
+.animate-scale-up { animation: scale-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-slow-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes float-gentle {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+@keyframes pulse-sacred {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.animate-spin-slow { animation: spin-slow 15s linear infinite; }
+.animate-spin-slow-reverse { animation: spin-slow-reverse 20s linear infinite; }
+.animate-float-gentle { animation: float-gentle 6s ease-in-out infinite; }
+.animate-pulse-sacred { animation: pulse-sacred 4s ease-in-out infinite; }
+
+.sacred-mandala-overlay {
+  background-image: url('https://www.transparenttextures.com/patterns/sacred-geometry.png');
+  pointer-events: none;
+}
+
+.sacred-map-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.route-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+.cursor-pointer { cursor: pointer !important; }
+
+/* Custom Sacred Scrollbars */
+.sacred-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.sacred-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+}
+
+.sacred-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(184, 134, 11, 0.2);
+  border-radius: 10px;
+}
+
+.sacred-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(184, 134, 11, 0.4);
+}
+
+/* Scrollbar Hide Utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  @supports (scrollbar-width: none) {
+    scrollbar-width: none;  /* Firefox */
+  }
+}

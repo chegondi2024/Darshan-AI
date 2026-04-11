@@ -1,5 +1,6 @@
 import { callGroqAi, isGroqEnabled } from "./aiProvider";
 import { getOptimalVisitWindow } from "./predictionService";
+import { MASTER_PROJECT_INTEL, getProjectBriefing } from "./masterMissionIntel";
 
 const hasValidKey = isGroqEnabled();
 
@@ -16,8 +17,8 @@ const GLOBAL_MISSION_GRID = [
 
 const SACRED_KNOWLEDGE = {
   darshan: {
-    dharma: 'Free Dharma Darshanam. Queue starts near Durga Ghat. Wait time: 2-6 hours.',
-    mukhamandapam: 'Rs. 100 ticket. Faster entry through Mukha Mandapam. Wait time: 1-2 hours.',
+    dharma: 'Free Dharma Darshanam. Queue starts near Durga Ghat. [Wait: Synchronized via Live Telemetry].',
+    mukhamandapam: 'Rs. 100 ticket. Faster entry through Mukha Mandapam. [Wait: Synchronized via Live Telemetry].',
     antaralayam: 'Rs. 300 / Rs. 500 ticket. Closest darshan to the deity. Highly restricted slots.',
     swarupa: 'VVIP / Protocol Darshan for special guests and donors.'
   },
@@ -59,11 +60,25 @@ const SACRED_KNOWLEDGE = {
 };
 
 export const chatWithVijayawadaAi = async (prompt, status) => {
-  const text = prompt.toLowerCase();
+  const langMatch = prompt.match(/\[LANGUAGE:(\w+)\]/i);
+  const targetLang = langMatch ? langMatch[1].toLowerCase() : 'en';
+  const text = prompt.toLowerCase().replace(/\[user_coords:[^\]]+\]/, '').replace(/\[language:[^\]]+\]/i, '').replace(/[^\w\s]/g, ' ').replace(/-/g, ' ');
 
-  try {
-    const systemPrompt = `You are the Vijayawada Kanaka Durga AI Mission Guide. CRITICAL RULE: EVERY response/explanation MUST start with "Om Namo Durgaye". NEVER skip this.
-      Provide tactical, honest, mission-ready advice. Use phrases like "Mission Ready", "Tactical Briefing", "Om Namo Durgaye". Always return JSON.
+  const LOCALIZED_MANTRAS = {
+     en: 'Om Namo Durgaye',
+     hi: 'ॐ नमो दुर्गाये',
+     te: 'ఓం నమో దుర్గాయే'
+  };
+  const mantra = LOCALIZED_MANTRAS[targetLang] || LOCALIZED_MANTRAS.en;
+
+    try {
+      const projectBriefing = getProjectBriefing();
+      const systemPrompt = `You are the Darshanam AI Assistant (v3.0). You are part of the Vijayawada Kanaka Durga Mission Hub. 
+      CRITICAL IDENTITY: You possess LIVE 30s telemetry data and mission-ready project sovereignty.
+      CRITICAL RULE: EVERY response/explanation MUST start with the appropriate sacred mantra: "${mantra}".
+      MISSION DATA: Use the provided [PROJECT DNA] to answer technical questions about your capabilities (heartbeat, scraping, multiple auras, etc.).
+      MULTILINGUAL MANDATE: If the user query includes a [LANGUAGE:X] directive, you MUST respond entirely in that language (Hindi/Telugu/English) using the appropriate regional script.
+      Provide tactical, honest, mission-ready advice. Always return JSON.
       
       FORMAT (JSON):
       {
@@ -73,7 +88,9 @@ export const chatWithVijayawadaAi = async (prompt, status) => {
         "visual_data": { "type": "string", "decision": "string" }
       }`;
 
-    const context = `Tactical Intelligence: ${JSON.stringify(SACRED_KNOWLEDGE)}
+    const context = `
+      PROJECT DNA: ${projectBriefing}
+      Tactical Intelligence: ${JSON.stringify(SACRED_KNOWLEDGE)}
       Mission Grid: ${JSON.stringify(GLOBAL_MISSION_GRID)}
       Live Status: ${JSON.stringify(status)}`;
 
@@ -100,7 +117,7 @@ export const chatWithVijayawadaAi = async (prompt, status) => {
   return generateFallback(text, status);
 };
 
-const generateFallback = (text, status) => {
+const generateFallback = (text, status, mantra = 'Om Namo Durgaye') => {
   const sk = SACRED_KNOWLEDGE;
 
   if (text.includes('sos') || text.includes('emergency') || text.includes('help') || text.includes('report') || text.includes('lost') || text.includes('medical')) {
@@ -152,7 +169,7 @@ const generateFallback = (text, status) => {
   }
 
   return {
-    explanation: `Om Namo Durgaye. Vijayawada Sector 02 Active. I am your tactical guide for Indrakeeladri Hill. Ask me about Darshan, Sevas, or routes from the Railway Station.`,
+    explanation: `${mantra}. Vijayawada Sector 02 Active. I am your tactical guide for Indrakeeladri Hill. Ask me about Darshan, Sevas, or routes from the Railway Station.`,
     visual_data: { type: 'GREETING', decision: 'GO' }
   };
 };

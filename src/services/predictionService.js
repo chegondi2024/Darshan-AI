@@ -15,7 +15,7 @@ const SECTOR_CONFIGS = {
  * Calculates crowd intensity for a given hour (0-23).
  * 0.0 = Empty, 1.0 = Critical Capacity
  */
-export const calculateHourIntensity = (hour, dayOfWeek = new Date().getDay(), sector = 'tirupati') => {
+export const calculateHourIntensity = (hour, dayOfWeek = new Date().getDay(), sector = 'tirupati', weatherFactor = 1.0) => {
   const cfg = SECTOR_CONFIGS[sector] || SECTOR_CONFIGS.tirupati;
   
   // Base hourly pattern (Gaussian-like peaks at 10 AM and 6 PM)
@@ -38,13 +38,16 @@ export const calculateHourIntensity = (hour, dayOfWeek = new Date().getDay(), se
     intensity *= 1.4;
   }
 
+  // Meteorological Multiplier
+  intensity *= weatherFactor;
+
   return Math.min(1.0, intensity);
 };
 
 /**
  * Returns a 24-hour forecast starting from now.
  */
-export const get24HourForecast = (sector = 'tirupati') => {
+export const get24HourForecast = (sector = 'tirupati', weatherFactor = 1.0) => {
   const now = new Date();
   const currentHour = now.getHours();
   const currentDay = now.getDay();
@@ -55,7 +58,7 @@ export const get24HourForecast = (sector = 'tirupati') => {
     const targetDay = (currentDay + (currentHour + i >= 24 ? 1 : 0)) % 7;
     forecast.push({
       hour: targetHour,
-      intensity: calculateHourIntensity(targetHour, targetDay, sector),
+      intensity: calculateHourIntensity(targetHour, targetDay, sector, weatherFactor),
       displayHour: `${targetHour % 12 || 12}${targetHour >= 12 ? 'PM' : 'AM'}`
     });
   }

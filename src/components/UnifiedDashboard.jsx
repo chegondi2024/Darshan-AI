@@ -76,10 +76,12 @@ const UnifiedDashboard = ({ onDeploySector, onClose }) => {
             </div>
             <div className="h-12 w-[1px] bg-slate-200 hidden md:block"></div>
             <div className="hidden md:flex items-center gap-6">
-               <div className="flex items-center gap-2">
-                  <Activity size={12} className="text-emerald-500 animate-pulse" />
-                  <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Global Telemetry: ACTIVE</span>
-               </div>
+                <div className="flex items-center gap-2">
+                   <Activity size={12} className={data.overall_grid_readiness > 0 ? "text-emerald-500 animate-pulse" : "text-slate-400"} />
+                   <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest text-nowrap">
+                      Global Telemetry: {data.overall_grid_readiness > 0 ? "ACTIVE" : "OFFLINE"}
+                   </span>
+                </div>
                <div className="px-3 py-1 rounded bg-slate-100 border border-slate-200 text-[8px] font-black text-slate-500 uppercase tracking-widest">Channel SECURE</div>
             </div>
          </div>
@@ -91,6 +93,54 @@ const UnifiedDashboard = ({ onDeploySector, onClose }) => {
            Exit Mission Grid
          </button>
       </div>
+
+      {/* 🧭 SACRED COMMAND DIRECTIVE (NEW) */}
+      <AnimatePresence>
+         {data.global_directive && (
+            <motion.div 
+               initial={{ opacity: 0, y: -20 }}
+               animate={{ opacity: 1, y: 0 }}
+               className="mx-10 mb-2 mt-2 px-8 py-4 bg-slate-950 rounded-2xl border border-yellow-500/30 flex items-center justify-between group cursor-pointer hover:border-yellow-500 transition-all shadow-2xl relative overflow-hidden"
+               onClick={() => {
+                  if (data.global_directive.target) {
+                     onDeploySector(data.global_directive.target);
+                  }
+               }}
+            >
+               <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-transparent to-transparent opacity-50" />
+               <div className="absolute left-0 top-0 bottom-0 w-1 bg-yellow-500 animate-pulse" />
+               
+               <div className="flex items-center gap-6 relative z-10">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 group-hover:scale-110 transition-transform">
+                     <Zap size={20} className="animate-pulse" />
+                  </div>
+                  <div className="flex flex-col">
+                     <div className="flex items-center gap-3 mb-0.5">
+                        <span className={`text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest ${
+                           data.global_directive.type === 'CRITICAL' ? 'bg-red-500 text-white' : 'bg-yellow-500 text-slate-950'
+                        }`}>
+                           {data.global_directive.type} MANDATE
+                        </span>
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Neural Decision Link</span>
+                     </div>
+                     <p className="text-sm font-bold text-white tracking-tight uppercase group-hover:text-yellow-400 transition-colors">
+                        {data.global_directive.text}
+                     </p>
+                  </div>
+               </div>
+
+               <div className="flex items-center gap-4 relative z-10">
+                  <div className="flex flex-col items-end">
+                     <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Focus Node</span>
+                     <span className="text-[10px] font-black text-white uppercase">{data.global_directive.target?.toUpperCase() || 'GLOBAL'}</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/5 text-slate-400 group-hover:text-white transition-colors">
+                     <ChevronRight size={20} />
+                  </div>
+               </div>
+            </motion.div>
+         )}
+      </AnimatePresence>
 
       {/* COMMAND MAIN VIEW */}
       <div className="flex-1 flex flex-col lg:flex-row p-6 gap-6 min-h-0 overflow-hidden relative z-10">
@@ -119,11 +169,18 @@ const UnifiedDashboard = ({ onDeploySector, onClose }) => {
                               <img src={s.icon} className="w-full h-full object-contain" alt={s.name} />
                            </div>
                            <div>
-                              <div className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-400 mb-1">{s.mantra}</div>
+                              <div className="flex items-center gap-2 mb-1">
+                                 <div className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-400">{s.mantra}</div>
+                                 <div className={`px-2 py-0.5 rounded-full text-[6px] font-black uppercase tracking-[0.1em] border ${
+                                    sectorData.syncStatus === 'LIVE' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-slate-500/10 text-slate-400 border-slate-500/20'
+                                 }`}>
+                                    {sectorData.syncStatus === 'LIVE' ? 'LIVE SYNC' : 'OFFLINE'}
+                                 </div>
+                              </div>
                               <h3 className={`text-xl font-black uppercase tracking-tighter ${s.text}`}>{s.name}</h3>
                            </div>
                         </div>
-                        <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${sectorData.grid_health > 80 ? 'bg-emerald-50 text-emerald-600' : 'bg-yellow-50 text-yellow-600'} border border-current opacity-80`}>
+                        <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${sectorData.grid_health > 80 ? 'bg-emerald-50 text-emerald-600' : sectorData.grid_health > 0 ? 'bg-yellow-50 text-yellow-600' : 'bg-slate-50 text-slate-300'} border border-current opacity-80`}>
                            {sectorData.grid_health}% READY
                         </div>
                      </div>

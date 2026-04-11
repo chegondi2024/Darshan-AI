@@ -5,6 +5,15 @@ const VoiceController = ({ onCommand }) => {
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState(null);
 
+  const handleFeedback = (text) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.2;
+      utterance.pitch = 1.1;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
   const handleVoiceCommand = useCallback((text) => {
     const t = text.toLowerCase();
     
@@ -18,6 +27,7 @@ const VoiceController = ({ onCommand }) => {
     // If any local language keyword is detected, send the raw text to AI for contextual translation
     const isLocalLang = localLanguageMappings.some(lang => lang.kw.some(k => t.includes(k)));
     if (isLocalLang) {
+       handleFeedback("Mission Command Synchronized. Processing Sacred Query.");
        onCommand({ type: 'QUERY_AI', query: text }); // Send original casing for better AI processing
        return true;
     }
@@ -27,6 +37,7 @@ const VoiceController = ({ onCommand }) => {
     for (const prefix of askPrefixes) {
        if (t.startsWith(prefix)) {
           const query = t.replace(prefix, '').trim();
+          handleFeedback(`Query received: ${query}`);
           onCommand({ type: 'QUERY_AI', query });
           return true;
        }

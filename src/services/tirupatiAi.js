@@ -1,5 +1,6 @@
 import { callGroqAi, isGroqEnabled } from "./aiProvider";
 import { getOptimalVisitWindow, predictWaitTimeHours } from "./predictionService";
+import { MASTER_PROJECT_INTEL, getProjectBriefing } from "./masterMissionIntel";
 
 const hasValidKey = isGroqEnabled();
 
@@ -26,11 +27,11 @@ const GLOBAL_MISSION_GRID = [
 // GRAND SACRED KNOWLEDGE DATABASE — COMPREHENSIVE PILGRIMAGE INTELLIGENCE
 const SACRED_KNOWLEDGE = {
    darshan: {
-      'SSD': 'Slotted Sarva Darshan (Free Slot). Token from Tirupati city counters. Wait: 2-4 hours. Token counters open 6AM at Alipiri, PAC-1, PAC-2, PAC-3.',
-      'SED': 'Special Entry Darshan (Rs. 300). Book online at tirupatibalaji.ap.gov.in. Wait: 30-90 mins. Bring printout + ID.',
-      'DIVYA': 'Divya Darshan. 100% FREE. Only for foot pilgrims who climb Alipiri (3550 steps) or Srivari Mettu. No booking needed.',
-      'SARVA': 'Free Sarvadarshan for ALL pilgrims. No ticket. No booking. Direct queue at VQC. Wait: 6-22 hours.',
-      'VIP': 'VIP / Seva Pass / Donor Pass (Rs.1500+). Entry near Mahadwaram. Wait: 15-30 mins. Book at TTD counters only.',
+      'SSD': 'Slotted Sarva Darshan (Free Slot). Token from Tirupati city counters. [Wait: Synchronized via Live Telemetry]. Token counters open 6AM at Alipiri, PAC-1, PAC-2, PAC-3.',
+      'SED': 'Special Entry Darshan (Rs. 300). Book online at tirupatibalaji.ap.gov.in. [Wait: Synchronized via Live Telemetry]. Bring printout + ID.',
+      'DIVYA': 'Divya Darshan. 100% FREE. Only for foot pilgrims who climb Alipiri (3550 steps) or Srivari Mettu. No booking needed. [Wait: Variable based on climb].',
+      'SARVA': 'Free Sarvadarshan for ALL pilgrims. No ticket. No booking. Direct queue at VQC. [Wait: Synchronized via Live Telemetry].',
+      'VIP': 'VIP / Seva Pass / Donor Pass (Rs.1500+). Entry near Mahadwaram. [Wait: Minimum walk-in]. Book at TTD counters only.',
       'SUPRABHATA': 'Suprabhata Seva: Early morning 3AM. Ticket: Rs.500. Online booking mandatory. Limited 90 seats.',
       'THOMALA': 'Thomala Seva: 3:30AM. Flower garland offering. Rs.500.',
       'KALYANOTSAVAM': 'Sacred Marriage of the Lord. Daily 10AM. Rs.750. Couples allowed.'
@@ -307,12 +308,16 @@ export async function chatWithTirupatiAi(prompt, currentStatus) {
    // ADVANCED NEURAL FALLBACK ENGINE
    const generateFallback = (query, status) => {
       // EXTRACT USER GPS COORDS if embedded by chatbot UI
-      let userCoords = null;
-      const coordMatch = query.match(/\[USER_COORDS:([\d.]+),([\d.]+)\]/);
-      if (coordMatch) {
-         userCoords = [parseFloat(coordMatch[1]), parseFloat(coordMatch[2])];
-      }
-      const text = query.toLowerCase().replace(/\[user_coords:[^\]]+\]/, '').replace(/[^\w\s]/g, ' ').replace(/-/g, ' ');
+      const langMatch = query.match(/\[LANGUAGE:(\w+)\]/i);
+      const targetLang = langMatch ? langMatch[1].toLowerCase() : 'en';
+      const text = query.toLowerCase().replace(/\[user_coords:[^\]]+\]/, '').replace(/\[language:[^\]]+\]/i, '').replace(/[^\w\s]/g, ' ').replace(/-/g, ' ');
+
+      const LOCALIZED_MANTRAS = {
+         en: 'Om Namo Venkatesaya',
+         hi: 'ॐ नमो वेंकटेशाय',
+         te: 'ఓం నమో వేంకటేశాయ'
+      };
+      const mantra = LOCALIZED_MANTRAS[targetLang] || LOCALIZED_MANTRAS.en;
 
       // CURRENT LOCATION ROUTER (GPS-Powered Live Navigation)
       const hasMyLocation = text.includes('my location') || text.includes('current location') || text.includes('from here') || text.includes('navigate to') || text.includes('take me to') || text.includes('where i am');
@@ -657,7 +662,13 @@ export async function chatWithTirupatiAi(prompt, currentStatus) {
    }
 
    try {
-      const contextPrompt = `KNOWLEDGE: ${JSON.stringify(SACRED_KNOWLEDGE)}\nGRID: ${JSON.stringify(GLOBAL_MISSION_GRID)}\nROUTES: ${JSON.stringify(MISSION_ROUTES)}\nSTATUS: ${JSON.stringify(currentStatus)}`;
+      const projectBriefing = getProjectBriefing();
+      const contextPrompt = `
+PROJECT DNA: ${projectBriefing}
+KNOWLEDGE: ${JSON.stringify(SACRED_KNOWLEDGE)}
+GRID: ${JSON.stringify(GLOBAL_MISSION_GRID)}
+ROUTES: ${JSON.stringify(MISSION_ROUTES)}
+STATUS: ${JSON.stringify(currentStatus)}`;
 
       return await callGroqAi({
          systemPrompt: baseSystemPrompt,
@@ -676,10 +687,11 @@ const baseSystemPrompt = `
 You are the TIRUPATI MISSION AI GUIDE. You provide expert pilgrimage tactical navigation.
 
 STRICT PROTOCOLS:
-1. CRITICAL RULE: EVERY response/explanation MUST start with "Om Namo Venkatesaya". NEVER skip this.
-2. You can draw routes on the map using action: "draw_route" with "points" coordinate arrays.
-3. You MUST be able to navigate between ANY two nodes in the GLOBAL_MISSION_GRID. If the user asks for "Route from A to B", find their coordinates and return them as a segment.
-4. Use the GRID and ROUTES provided to synthesize tactical guidance.
+1. CRITICAL IDENTITY: You are the Darshanam AI Assistant (v3.0). You are part of a tactical pilgrimage suite with LIVE 30s telemetry.
+2. SACRED RULE: EVERY response/explanation MUST start with "Om Namo Venkatesaya".
+3. MISSION DATA: Use the provided [PROJECT DNA] to answer technical questions about your capabilities (heartbeat, scraping, multiple auras, etc.).
+4. TACTICAL NAVIGATION: Use GRID and ROUTES to synthesize guidance.
+5. MULTILINGUAL MANDATE: If the user query includes a [LANGUAGE:X] directive, you MUST respond entirely in that language (Hindi/Telugu/English) using the appropriate regional script.
 
 FORMAT (JSON):
 {

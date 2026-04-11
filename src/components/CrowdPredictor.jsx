@@ -36,7 +36,9 @@ const CrowdPredictor = ({ sector = 'tirupati', currentGridHealth = 100 }) => {
   const [bestWindow, setBestWindow] = useState(null);
   
   useEffect(() => {
-    setForecast(get24HourForecast(sector));
+    const weatherFactor = (sector === 'tirupati' && currentGridHealth) ? 1.0 : (1.0); // Fallback logic
+    // We'll use the prop passed or a default
+    setForecast(get24HourForecast(sector, 1.0));
     setBestWindow(getOptimalVisitWindow(sector));
   }, [sector, currentGridHealth]);
 

@@ -3,6 +3,13 @@ import { Shield, MapPin, Zap, ChevronRight, Navigation, Crosshair, Database, Act
 import { motion } from 'framer-motion';
 import { fetchAllSectorsData } from '../services/liveDataService';
 
+import SabarimalaIcon from '../assets/gods/ayyappa.png';
+import VijayawadaIcon from '../assets/gods/durga.png';
+import SrisailamIcon from '../assets/gods/mallikarjuna.png';
+import SimhachalamIcon from '../assets/gods/narasimha.png';
+import AnnavaramIcon from '../assets/gods/satyanarayana.png';
+import TirupatiIcon from '../assets/gods/venkateswara.png';
+
 const LandingPage = ({ onSelectSector, onOpenOverseer }) => {
   const [liveStats, setLiveStats] = useState(null);
 
@@ -28,7 +35,7 @@ const LandingPage = ({ onSelectSector, onOpenOverseer }) => {
       location: 'Seshachalam Hills',
       description: 'Strategic AI-Powered Hub for Lord Venkateswara Darshan Management.',
       color: 'text-yellow-500',
-      godIcon: '/assets/gods/venkateswara.png'
+      godIcon: TirupatiIcon
     },
     {
       id: 'vijayawada',
@@ -37,7 +44,7 @@ const LandingPage = ({ onSelectSector, onOpenOverseer }) => {
       location: 'Indrakeeladri Hill',
       description: 'Tactical Mission Hub for Kanaka Durga Temple Navigation & Intelligence.',
       color: 'text-emerald-500',
-      godIcon: '/assets/gods/durga.png'
+      godIcon: VijayawadaIcon
     },
     {
       id: 'srisailam',
@@ -46,7 +53,7 @@ const LandingPage = ({ onSelectSector, onOpenOverseer }) => {
       location: 'Nallamala Forests',
       description: 'Strategic Hub for Mallikarjuna Jyotirlinga. Specialized in Forest Gate Logistics.',
       color: 'text-orange-500',
-      godIcon: '/assets/gods/mallikarjuna.png'
+      godIcon: SrisailamIcon
     },
     {
       id: 'simhachalam',
@@ -55,7 +62,7 @@ const LandingPage = ({ onSelectSector, onOpenOverseer }) => {
       location: 'Simhagiri Hill',
       description: 'Tactical Hub for Narasimha Swamy. Specialized in Crowd Control.',
       color: 'text-yellow-400',
-      godIcon: '/assets/gods/narasimha.png'
+      godIcon: SimhachalamIcon
     },
     {
       id: 'annavaram',
@@ -64,7 +71,7 @@ const LandingPage = ({ onSelectSector, onOpenOverseer }) => {
       location: 'Ratnagiri Hill',
       description: 'Strategic Hub for Satyanarayana Swamy. Specialized in Vratam Logistics.',
       color: 'text-blue-500',
-      godIcon: '/assets/gods/satyanarayana.png'
+      godIcon: AnnavaramIcon
     },
     {
       id: 'sabarimala',
@@ -73,7 +80,7 @@ const LandingPage = ({ onSelectSector, onOpenOverseer }) => {
       location: 'Periyar, Kerala',
       description: 'Mission Hub for Ayyappa. Specialized in 18-Steps & Pamba Navigation.',
       color: 'text-teal-500',
-      godIcon: '/assets/gods/ayyappa.png'
+      godIcon: SabarimalaIcon
     }
   ];
 

@@ -9,6 +9,13 @@ import {
 import { fetchAllSectorsData } from '../services/liveDataService';
 import GisMap from './GisMap';
 
+import SabarimalaIcon from '../assets/gods/ayyappa.png';
+import VijayawadaIcon from '../assets/gods/durga.png';
+import SrisailamIcon from '../assets/gods/mallikarjuna.png';
+import SimhachalamIcon from '../assets/gods/narasimha.png';
+import AnnavaramIcon from '../assets/gods/satyanarayana.png';
+import TirupatiIcon from '../assets/gods/venkateswara.png';
+
 const UnifiedDashboard = ({ onDeploySector, onClose }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,12 +32,12 @@ const UnifiedDashboard = ({ onDeploySector, onClose }) => {
   }, []);
 
   const sectors = [
-    { id: 'tirupati', name: 'Tirupati AI', mantra: 'Om Namo Venkatesaya', color: 'border-yellow-500', text: 'text-slate-900', accent: 'text-yellow-600', bg: 'bg-white/80', icon: '/assets/gods/venkateswara.png' },
-    { id: 'vijayawada', name: 'Vijayawada AI Hub', mantra: 'Om Namo Durgaye', color: 'border-emerald-500', text: 'text-slate-900', accent: 'text-emerald-600', bg: 'bg-white/80', icon: '/assets/gods/durga.png' },
-    { id: 'srisailam', name: 'Srisailam AI', mantra: 'Om Namah Shivaya', color: 'border-orange-500', text: 'text-slate-900', accent: 'text-orange-600', bg: 'bg-white/80', icon: '/assets/gods/mallikarjuna.png' },
-    { id: 'simhachalam', name: 'Simhachalam AI', mantra: 'Om Namo Narasimhaya', color: 'border-yellow-400', text: 'text-slate-900', accent: 'text-yellow-600', bg: 'bg-white/80', icon: '/assets/gods/narasimha.png' },
-    { id: 'annavaram', name: 'Annavaram AI', mantra: 'Om Namo Satyanarayanaya', color: 'border-blue-500', text: 'text-slate-900', accent: 'text-blue-600', bg: 'bg-white/80', icon: '/assets/gods/satyanarayana.png' },
-    { id: 'sabarimala', name: 'Sabarimala AI Hub', mantra: 'Swamiye Saranam Ayyappa', color: 'border-teal-500', text: 'text-slate-900', accent: 'text-teal-600', bg: 'bg-white/80', icon: '/assets/gods/ayyappa.png' }
+    { id: 'tirupati', name: 'Tirupati AI', mantra: 'Om Namo Venkatesaya', color: 'border-yellow-500', text: 'text-slate-900', accent: 'text-yellow-600', bg: 'bg-white/80', icon: TirupatiIcon },
+    { id: 'vijayawada', name: 'Vijayawada AI Hub', mantra: 'Om Namo Durgaye', color: 'border-emerald-500', text: 'text-slate-900', accent: 'text-emerald-600', bg: 'bg-white/80', icon: VijayawadaIcon },
+    { id: 'srisailam', name: 'Srisailam AI', mantra: 'Om Namah Shivaya', color: 'border-orange-500', text: 'text-slate-900', accent: 'text-orange-600', bg: 'bg-white/80', icon: SrisailamIcon },
+    { id: 'simhachalam', name: 'Simhachalam AI', mantra: 'Om Namo Narasimhaya', color: 'border-yellow-400', text: 'text-slate-900', accent: 'text-yellow-600', bg: 'bg-white/80', icon: SimhachalamIcon },
+    { id: 'annavaram', name: 'Annavaram AI', mantra: 'Om Namo Satyanarayanaya', color: 'border-blue-500', text: 'text-slate-900', accent: 'text-blue-600', bg: 'bg-white/80', icon: AnnavaramIcon },
+    { id: 'sabarimala', name: 'Sabarimala AI Hub', mantra: 'Swamiye Saranam Ayyappa', color: 'border-teal-500', text: 'text-slate-900', accent: 'text-teal-600', bg: 'bg-white/80', icon: SabarimalaIcon }
   ];
 
   if (loading) {

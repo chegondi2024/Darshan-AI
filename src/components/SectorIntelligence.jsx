@@ -9,6 +9,13 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import CrowdPredictor from './CrowdPredictor';
 
+import SabarimalaIcon from '../assets/gods/ayyappa.png';
+import VijayawadaIcon from '../assets/gods/durga.png';
+import SrisailamIcon from '../assets/gods/mallikarjuna.png';
+import SimhachalamIcon from '../assets/gods/narasimha.png';
+import AnnavaramIcon from '../assets/gods/satyanarayana.png';
+import TirupatiIcon from '../assets/gods/venkateswara.png';
+
 const SectorIntelligence = ({ existingData, onLocatePlace, showGhatTraffic, setGhatTraffic, showPACMarkers, setPACMarkers, showCrowdMarkers, setCrowdMarkers, showGoogleTraffic, setGoogleTraffic, nextSyncIn, lastSync, sector = 'tirupati' }) => {
   const [activeFilter, setActiveFilter] = useState('ALL'); // ALL, HILL, CITY
   const [expandedCard, setExpandedCard] = useState(null);
@@ -109,7 +116,7 @@ const SectorIntelligence = ({ existingData, onLocatePlace, showGhatTraffic, setG
          <div className="flex items-center gap-4 w-full relative z-10">
             <div className="w-16 h-16 rounded-2xl bg-white border border-slate-100 flex items-center justify-center p-0.5 shadow-sm group-hover:scale-105 transition-transform duration-500">
                <img 
-                  src={IS_TIRUPATI ? "/assets/gods/venkateswara.png" : sector === 'srisailam' ? "/assets/gods/mallikarjuna.png" : sector === 'simhachalam' ? "/assets/gods/narasimha.png" : sector === 'annavaram' ? "/assets/gods/satyanarayana.png" : sector === 'sabarimala' ? "/assets/gods/ayyappa.png" : "/assets/gods/durga.png"} 
+                  src={IS_TIRUPATI ? TirupatiIcon : sector === 'srisailam' ? SrisailamIcon : sector === 'simhachalam' ? SimhachalamIcon : sector === 'annavaram' ? AnnavaramIcon : sector === 'sabarimala' ? SabarimalaIcon : VijayawadaIcon} 
                   alt={`${sector} Deity`} 
                   className="w-full h-full object-cover rounded-xl" 
                />

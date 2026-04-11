@@ -64,7 +64,9 @@ dist
 
 # Gatsby files
 .cache/
-public
+# public/ is for static assets in Vite, should NOT be ignored
+# public/
+
 
 # Comment out this line if you want to keep your build output
 dist/
@@ -94,8 +96,13 @@ Thumbs.db
 *.swo
 
 # Project specific
-tirupati_tactical_hub_state_*.png
-*.webp
-*.png
-!public/*.png
+# Project specific - allow branding and icons
+!branding*.png
+!*bg.png
+!public/sacred-icons/**/*.png
+!public/sacred-icons/**/*.svg
+!public/sacred-icons/**/*.ico
+!public/sacred-icons/**/*.webp
+!public/sacred-icons/**/*.jpg
+!public/sacred-icons/**/*.jpeg
 !src/assets/**/*.png

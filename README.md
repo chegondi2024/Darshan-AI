@@ -4,7 +4,7 @@
 
 ![Darshanam Logo](public/branding.png)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/chegondi2024/darshan&env=VITE_GROQ_API_KEY)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/chegondi2024/Darshan-AI&env=VITE_GROQ_API_KEY)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -54,7 +54,7 @@ The platform provides a unified command center for six major sectors:
 
 ## 🛠️ Local Development
 
-1. Clone the repository: `git clone https://github.com/chegondi2024/darshan.git`
+1. Clone the repository: `git clone https://github.com/chegondi2024/Darshan-AI.git`
 2. Install dependencies: `npm install`
 3. Create a `.env` file and add: `VITE_GROQ_API_KEY=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`
 4. Launch the hub: `npm run dev`

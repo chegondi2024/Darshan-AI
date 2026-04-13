@@ -52,4 +52,4 @@ npm run dev
 ```
 
 ---
-**Created by Antigravity AI for Sacred Pilgrimage Intelligence.**
+**Created by Mani AI for Sacred Pilgrimage Intelligence.**

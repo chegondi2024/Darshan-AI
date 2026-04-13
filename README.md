@@ -36,7 +36,7 @@ node initDb.js
 ### 2. Backend Configuration
 Rename `.env.template` to `.env` and provide your credentials:
 - `DB_USER=postgres`
-- `DB_PASSWORD=your_password`
+- `DB_PASSWORD=3366`
 - `DB_NAME=Darshanam AI`
 
 ### 3. Start the Platform
